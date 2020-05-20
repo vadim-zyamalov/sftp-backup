@@ -3,7 +3,7 @@
 SET PATH=%PATH%;"C:\Program Files\WinRAR\";"C:\Program Files (x86)\WinRAR\"
 
 set curdir="%cd%"
-cd "%1"
+cd "%~1"
 
 call :treeProcess
 cd "%curdir%"
@@ -33,7 +33,7 @@ goto :eof
     
     rem Dive into subfolders
     for /D %%d in (*) do (
-        cd %%d
+        cd "%%~d"
         call :treeProcess
         cd ..
     )

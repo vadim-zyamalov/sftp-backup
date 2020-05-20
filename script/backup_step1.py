@@ -88,13 +88,8 @@ def rar_process(startpath, path, item):
             return result
         else:
             if os.path.splitext(item)[0] == rarlist[0].filename:
-                tmp_date = datetime.datetime(rarlist[0].date_time[0],
-                                             rarlist[0].date_time[1],
-                                             rarlist[0].date_time[2],
-                                             hour=rarlist[0].date_time[3],
-                                             minute=rarlist[0].date_time[4],
-                                             second=rarlist[0].date_time[5])
-                result[norm_path(path + rarlist[0].filename)] = datetime.datetime.timestamp(tmp_date)
+                tmp_time = rarlist[0].mtime if rarlist[0].mtime is not None else datetime.datetime(*rarlist[0].date_time)
+                result[norm_path(path + rarlist[0].filename)] = datetime.datetime.timestamp(tmp_time)
     return result
 
 
