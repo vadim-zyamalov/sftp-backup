@@ -36,7 +36,7 @@ goto :eof
     rem Dive into subfolders
     for /D %%d in (*) do (
         cd "%%~d"
-        echo %%~d
+        echo %%~dpd
         call :treeProcess
         cd ..
     )

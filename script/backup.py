@@ -92,10 +92,6 @@ if __name__ == '__main__':
         targetlist = {}
         targetlist = folder_process(pair['target'], '', settings['exclude'])
 
-        with open('filelistt', 'w', encoding='utf-8') as file:
-            for item in targetlist:
-                file.write(item + '\n')
-
         ## SOURCE
         for tmpsource in pair['source']:
             sourcelist = {}
@@ -106,10 +102,6 @@ if __name__ == '__main__':
                 sourcelist = sftp_folder_process(sftp, tmpsource, '', pair['exclude'], settings['exclude'])
             sftp.close()
 
-            with open('filelists', 'w', encoding='utf-8') as file:
-                for item in sourcelist:
-                    file.write(item + '\n')
-    
             ## RESULTLIST
             resultlist = []
             for item in sourcelist:
@@ -125,11 +117,7 @@ if __name__ == '__main__':
                 else:
                     if (sourcelist[item] > targetlist[item]):
                         resultlist.append((item, os_path(item)))
-        
-            with open('filelist', 'w', encoding='utf-8') as file:
-                for item in resultlist:
-                    file.write('{}\t{}\n'.format(item[0], item[1]))
-            
+
             with pysftp.Connection(settings['sftp']['hostname'], 
                                    username = settings['sftp']['username'],
                                    password = settings['sftp']['password'], 
@@ -146,9 +134,10 @@ if __name__ == '__main__':
             sftp.close()
 
         command = '{}'.format(os.getcwd()) + os.sep + 'backup.bat "{}"'.format(pair['target'])
-        with subprocess.Popen(command, cwd=os.getcwd(), shell=False) as proc:
+        with subprocess.Popen(command, cwd=os.getcwd(), shell=False, stdout=subprocess.PIPE) as proc:
             try:
-                outs, errs = proc.communicate(timeout=15)
+                outs, errs = proc.communicate()
             except TimeoutExpired:
                 proc.kill()
                 outs, errs = proc.communicate()
+            proc.kill()
