@@ -1,0 +1,16 @@
+{
+	"sftp" : {
+		"hostname" : "",
+		"username" : "",
+		"password" : ""
+	},
+	"archives" : [".zip", ".gz", ".7z"],
+	"exclude"  : [""],
+	"sync"     : [
+		{
+			"source"  : [""],
+			"exclude" : [""],
+			"target"  : ""
+		}
+	]
+}

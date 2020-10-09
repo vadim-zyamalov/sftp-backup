@@ -1,14 +1,44 @@
 @echo off
 
-cls
+echo Process really fat files
 
-rem Sync files
-echo "%~dp0\backup_step1.py"
-python "%~dp0\backup_step1.py" -s "%~1" -t "%~2"
+SET PATH=%PATH%;"C:\Program Files\WinRAR\";"C:\Program Files (x86)\WinRAR\"
 
-cls
+set curdir="%cd%"
+cd "%~1"
 
-rem Deal with archives
-"%~dp0\backup_step2.bat" "%~2"
+call :treeProcess
+cd "%curdir%"
+goto :eof
 
-pause
+:treeProcess
+    rem Process really fat files
+    for %%f in (*.dta,*.dat,*.csv,*.txt,*.tab,*.sas7bdat,*.sav,*.raw) do (
+        @echo "%%~dpnxf"
+        if exist "%%f.rar" del "%%f.rar"
+        rar a -inul -rr -t -df -- "%%f.rar" "%%f"
+    )
+        
+    rem Converting archives to rar
+    for %%f in (*.zip,*.gz,*.7z) do (
+        @echo "%%~dpnxf"
+        if exist "%%~nf.rar" del "%%~nf.rar"
+        winrar x -inul -- "%%f" * "%%~df\_tmp\"
+        if NOT ERRORLEVEL 1 (
+            cd "%%~df\_tmp\"
+            rar a -inul -r -rr -t -df -- "%%~dpf\%%~nf.rar" *
+            cd "%%~dpf"
+            del "%%f"
+        )
+        rmdir /S /Q "%%~df\_tmp\"
+    )
+    
+    rem Dive into subfolders
+    for /D %%d in (*) do (
+        cd "%%~d"
+        echo %%~d
+        call :treeProcess
+        cd ..
+    )
+    exit /b
+
