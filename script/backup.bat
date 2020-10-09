@@ -16,7 +16,7 @@ goto :eof
     for %%f in (*.dta,*.dat,*.csv,*.txt,*.tab,*.sas7bdat,*.sav,*.raw) do (
         @echo "%%~dpnxf"
         if exist "%%f.rar" del "%%f.rar"
-        rar a -inul -rr -t -df -- "%%f.rar" "%%f"
+        rar a -rr -t -df -- "%%f.rar" "%%f"
     )
         
     rem Converting archives to rar
@@ -26,7 +26,7 @@ goto :eof
         winrar x -inul -- "%%f" * "%%~df\_tmp\"
         if NOT ERRORLEVEL 1 (
             cd "%%~df\_tmp\"
-            rar a -inul -r -rr -t -df -- "%%~dpf\%%~nf.rar" *
+            rar a -r -rr -t -df -- "%%~dpf\%%~nf.rar" *
             cd "%%~dpf"
             del "%%f"
         )
