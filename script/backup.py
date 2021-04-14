@@ -26,7 +26,10 @@ def sftp_folder_process(handler, startpath, path, excludedir=[], excludeext=[]):
     print(startpath + path)
     if (startpath + path) in excludedir:
         return {}
-    filelist = handler.listdir(startpath + path)
+    try:
+        filelist = handler.listdir(startpath + path)
+    except FileNotFoundError:
+        return {}
     result = {}
     for item in filelist:
         if handler.isfile(startpath + path + item):
@@ -45,7 +48,10 @@ def folder_process(startpath, path, exclude=[]):
     print(startpath + path)
     if (startpath + path) in exclude:
         return {}
-    filelist = os.listdir(startpath + path)
+    try:
+        filelist = os.listdir(startpath + path)
+    except FileNotFoundError:
+        return {}
     result = {}
     for item in filelist:
         if os.path.splitext(item)[1] in exclude:
