@@ -13,7 +13,7 @@ goto :eof
 
 :treeProcess
     rem Process really fat files
-    for %%f in (*.dta,*.dat,*.csv,*.txt,*.tab,*.sas7bdat,*.sav,*.raw) do (
+    for %%f in (*.dta,*.dat,*.csv,*.tab,*.sas7bdat,*.sav,*.raw) do (
         @echo "%%~dpnxf"
         if exist "%%f.rar" del "%%f.rar"
         rar a -rr -t -df -- "%%f.rar" "%%f"
