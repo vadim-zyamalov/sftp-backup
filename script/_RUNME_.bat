@@ -3,5 +3,5 @@
 cls
 
 rem Sync files
-python "%~dp0\backup.py"
+python -u "%~dp0\backup.py"
 pause
