@@ -19,14 +19,14 @@ goto :eof
         rar a -rr -t -df -- "%%f.rar" "%%f"
     )
 
-    for %%f in (*.csv,*.txt,*.raw,*.mdb) do (
+    for %%f in (*.csv,*.tsv,*.txt,*.raw,*.mdb) do (
         if %%~zf gtr 10000000 (
             echo Processing fat text file: %%~dpnxf
             if exist "%%f.rar" del "%%f.rar"
             rar a -rr -t -df -- "%%f.rar" "%%f"
         )
     )
-        
+
     rem Converting archives to rar
     for %%f in (*.zip,*.gz,*.7z) do (
         echo Processing archive: %%~dpnxf
@@ -40,7 +40,7 @@ goto :eof
         )
         rmdir /S /Q "%%~df\_tmp\"
     )
-    
+
     rem Dive into subfolders
     for /D %%d in (*) do (
         echo Diving into: %%~dpnd
@@ -49,4 +49,3 @@ goto :eof
         cd ..
     )
     exit /b
-
