@@ -20,7 +20,7 @@ goto :eof
     )
 
     for %%f in (*.csv,*.tsv,*.txt,*.raw,*.mdb) do (
-        if %%~zf gtr 10000000 (
+        if %%~zf gtr 5000000 (
             echo Processing fat text file: %%~dpnxf
             if exist "%%f.rar" del "%%f.rar"
             rar a -rr -t -df -- "%%f.rar" "%%f"
